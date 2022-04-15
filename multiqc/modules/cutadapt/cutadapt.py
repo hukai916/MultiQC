@@ -265,7 +265,7 @@ class MultiqcModule(BaseMultiqcModule):
     def cutadapt_filtered_barplot(self):
         """Bar plot showing proportion of reads trimmed"""
 
-        pconfig = {"id": "cutadapt_filtered_reads_plot", "title": "Cutadapt: Filtered Reads", "ylab": "Counts"}
+        pconfig = {"id": "cutadapt_filtered_reads_plot", "title": "Cutadapt: Post-Filtered Reads", "ylab": "Counts"}
 
         # We just use all categories. If a report is generated with a mixture
         # of SE and PE data then this means quite a lot of categories.
@@ -284,9 +284,9 @@ class MultiqcModule(BaseMultiqcModule):
         cats["r_filtered_unexplained"] = {"name": "Filtered reads (uncategorised)"}
 
         self.add_section(
-            name="Filtered Reads",
+            name="Post-Filtered Reads",
             anchor="cutadapt_filtered_reads",
-            description="This plot shows the number of reads (SE) / pairs (PE) removed by Cutadapt.",
+            description="This plot shows the number of reads (SE) / pairs (PE) that passed Cutadapt filter.",
             plot=bargraph.plot(self.cutadapt_data, cats, pconfig),
         )
 

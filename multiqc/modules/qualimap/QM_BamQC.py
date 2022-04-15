@@ -346,7 +346,7 @@ def report_sections(self):
 
         # Section 1 - BamQC Coverage Histogram
         self.add_section(
-            name="Coverage histogram",
+            name="Coverage histogram (post-filtered and deduplicated BAM)",
             anchor="qualimap-coverage-histogram",
             description="Distribution of the number of locations in the reference genome with a given depth of coverage.",
             helptext=coverage_histogram_helptext,
@@ -367,7 +367,7 @@ def report_sections(self):
         )
         # Section 2 - BamQC cumulative coverage genome fraction
         self.add_section(
-            name="Cumulative genome coverage",
+            name="Cumulative genome coverage (post-filtered and deduplicated BAM)",
             anchor="qualimap-cumulative-genome-fraction-coverage",
             description="Percentage of the reference genome with at least the given depth of coverage.",
             helptext=genome_fraction_helptext,
@@ -432,7 +432,7 @@ def report_sections(self):
         alignment errors, or structural variation or splicing in a gap between
         reads from the same fragment."""
         self.add_section(
-            name="Insert size histogram",
+            name="Insert size histogram (post-filtered and deduplicated BAM)",
             anchor="qualimap-insert-size-histogram",
             description="Distribution of estimated insert sizes of mapped reads.",
             helptext=insert_size_helptext,
@@ -503,7 +503,7 @@ def report_sections(self):
             lg_config["extra_series"] = extra_series
 
         self.add_section(
-            name="GC content distribution",
+            name="GC content distribution (post-filtered and deduplicated BAM)",
             anchor="qualimap-gc-distribution",
             description=desc,
             helptext=gc_content_helptext,
