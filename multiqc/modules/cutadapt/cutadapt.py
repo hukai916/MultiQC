@@ -135,6 +135,8 @@ class MultiqcModule(BaseMultiqcModule):
                     s_name = f["s_name"]
                 else:
                     s_name = self.clean_s_name(s_name, f)
+                    if s_name.startswith("R2_"):
+                        s_name = s_name[3:]
                 if s_name in self.cutadapt_data:
                     log.debug("Duplicate sample name found! Overwriting: {}".format(s_name))
                 self.cutadapt_data[s_name] = dict()
