@@ -2,14 +2,14 @@
 
 """ MultiQC module to parse output from Pangolin """
 
-from __future__ import print_function
-from collections import OrderedDict
-import logging
-import csv
 
-from multiqc.utils import mqc_colour
-from multiqc.plots import table
+import csv
+import logging
+from collections import OrderedDict
+
 from multiqc.modules.base_module import BaseMultiqcModule
+from multiqc.plots import table
+from multiqc.utils import mqc_colour
 
 # Initialise the logger
 log = logging.getLogger(__name__)
@@ -19,7 +19,6 @@ class MultiqcModule(BaseMultiqcModule):
     """Pangolin module"""
 
     def __init__(self):
-
         # Initialise the parent module
         super().__init__(
             name="Pangolin",
@@ -138,7 +137,7 @@ class MultiqcModule(BaseMultiqcModule):
             "description": "Conflict between categories in decision tree",
             "min": 0,
             "max": 1,
-            "scale": "RdBl-rev",
+            "scale": "RdBu-rev",
         }
 
         headers["ambiguity_score"] = {
@@ -160,7 +159,7 @@ class MultiqcModule(BaseMultiqcModule):
             "description": "Scorpio: The proportion of defining variants which have the alternative allele in the sequence.",
             "min": 0,
             "max": 1,
-            "scale": "RdYlBl",
+            "scale": "RdYlBu",
         }
 
         headers["scorpio_conflict"] = {

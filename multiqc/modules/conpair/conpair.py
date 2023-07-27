@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-
 """ MultiQC module to parse output from Conpair """
 
-from __future__ import print_function
+
 import logging
 import re
 
@@ -18,7 +16,6 @@ class MultiqcModule(BaseMultiqcModule):
     """
 
     def __init__(self):
-
         # Initialise the parent object
         super(MultiqcModule, self).__init__(
             name="Conpair",

@@ -2,9 +2,9 @@
 
 """ MultiQC datatable class, used by tables and beeswarm plots """
 
-from collections import defaultdict, OrderedDict
 import logging
 import re
+from collections import OrderedDict, defaultdict
 
 from multiqc.utils import config, report
 
@@ -43,7 +43,6 @@ class datatable(object):
 
         # Go through each table section
         for idx, d in enumerate(data):
-
             # Get the header keys
             try:
                 keys = headers[idx].keys()
@@ -53,7 +52,6 @@ class datatable(object):
 
             # Add header keys from the data
             if pconfig.get("only_defined_headers", True) is False:
-
                 # Get the keys from the data
                 keys = list()
                 for samp in d.values():
@@ -152,7 +150,6 @@ class datatable(object):
                 for ns in config.table_columns_visible.keys():
                     # Make namespace key case insensitive
                     if ns.lower() == headers[idx][k]["namespace"].lower():
-
                         # First - if config value is a bool, set all module columns to that value
                         if isinstance(config.table_columns_visible[ns], bool):
                             headers[idx][k]["hidden"] = not config.table_columns_visible[ns]
@@ -169,7 +166,6 @@ class datatable(object):
                 for ns in config.table_columns_name.keys():
                     # Make namespace key case insensitive
                     if ns.lower() == headers[idx][k]["namespace"].lower():
-
                         # Assume a dict of the specific column IDs
                         try:
                             headers[idx][k]["title"] = config.table_columns_name[ns][k]
@@ -247,18 +243,12 @@ class datatable(object):
                     )
 
         # Overwrite shared key settings and at the same time assign to buckets for sorting
-        # Within each section of headers, sort explicitly by 'title' if the dict
-        # is not already ordered, so the final ordering is by:
-        # placement > section > explicit_ordering > title
+        # So the final ordering is:
+        #   placement > section > explicit_ordering
         # Of course, the user can shuffle these manually.
         self.headers_in_order = defaultdict(list)
-
         for idx, hs in enumerate(headers):
-            keys_in_section = hs.keys()
-            if type(hs) is not OrderedDict:
-                keys_in_section = sorted(keys_in_section, key=lambda k: headers[idx][k]["title"])
-
-            for k in keys_in_section:
+            for k in hs.keys():
                 sk = headers[idx][k]["shared_key"]
                 if sk is not None:
                     headers[idx][k]["dmax"] = shared_keys[sk]["dmax"]

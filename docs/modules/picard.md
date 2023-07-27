@@ -1,7 +1,7 @@
 ---
-Name: Picard
-URL: http://broadinstitute.github.io/picard/
-Description: >
+name: Picard
+url: http://broadinstitute.github.io/picard/
+description: >
   Picard is a set of Java command line tools for manipulating high-throughput
   sequencing data.
 ---
@@ -99,6 +99,16 @@ picard_config:
 
 Only values listed in `HsMetrics_table_cols` will be included in the table.
 Anything listed in `HsMetrics_table_cols_hidden` will be hidden by default.
+
+A similar config is available for customising the HsMetrics columns in the General Stats table:
+
+```yaml
+picard_config:
+  HsMetrics_genstats_table_cols:
+    - NEAR_BAIT_BASES
+  HsMetrics_genstats_table_cols_hidden:
+    - MAX_TARGET_COVERAGE
+```
 
 #### InsertSizeMetrics
 

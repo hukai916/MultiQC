@@ -2,12 +2,12 @@
 
 """ MultiQC functions to plot a table """
 
-from collections import defaultdict, OrderedDict
 import logging
 import random
+from collections import OrderedDict, defaultdict
 
-from multiqc.utils import config, report, util_functions, mqc_colour
-from multiqc.plots import table_object, beeswarm
+from multiqc.plots import beeswarm, table_object
+from multiqc.utils import config, mqc_colour, report, util_functions
 
 logger = logging.getLogger(__name__)
 
@@ -73,7 +73,6 @@ def make_table(dt):
         table_title = table_id.replace("_", " ").title()
 
     for idx, k, header in dt.get_headers_in_order():
-
         rid = header["rid"]
 
         # Build the table header cell
@@ -135,7 +134,7 @@ def make_table(dt):
         if header["scale"] == False:
             c_scale = None
         else:
-            c_scale = mqc_colour.mqc_colour_scale(header["scale"], header["dmin"], header["dmax"])
+            c_scale = mqc_colour.mqc_colour_scale(header["scale"], header["dmin"], header["dmax"], id=table_id)
 
         # Collect conditional formatting config
         cond_formatting_rules = {}
@@ -147,14 +146,17 @@ def make_table(dt):
         cond_formatting_colours.extend(config.table_cond_formatting_colours)
 
         # Add the data table cells
-        for (s_name, samp) in dt.data[idx].items():
+        for s_name, samp in dt.data[idx].items():
             if k in samp:
                 val = samp[k]
                 kname = "{}_{}".format(header["namespace"], rid)
                 dt.raw_vals[s_name][kname] = val
 
                 if "modify" in header and callable(header["modify"]):
-                    val = header["modify"](val)
+                    try:
+                        val = header["modify"](val)
+                    except TypeError as e:
+                        logger.debug(f"Error modifying table value {kname} : {val} - {e}")
 
                 try:
                     dmin = header["dmin"]
@@ -286,7 +288,6 @@ def make_table(dt):
     # Buttons above the table
     html = ""
     if not config.simple_output:
-
         # Copy Table Button
         html += """
         <button type="button" class="mqc_table_copy_btn btn btn-default btn-sm" data-clipboard-target="#{tid}">
@@ -396,7 +397,7 @@ def make_table(dt):
             <h4 class="modal-title">{title}: Columns</h4>
           </div>
           <div class="modal-body">
-            <p>Uncheck the tick box to hide columns. Click and drag the handle on the left to change order.</p>
+            <p>Uncheck the tick box to hide columns. Click and drag the handle on the left to change order. Table ID: <code>{tid}</code></p>
             <p>
                 <button class="btn btn-default btn-sm mqc_configModal_bulkVisible" data-target="#{tid}" data-action="showAll">Show All</button>
                 <button class="btn btn-default btn-sm mqc_configModal_bulkVisible" data-target="#{tid}" data-action="showNone">Show None</button>

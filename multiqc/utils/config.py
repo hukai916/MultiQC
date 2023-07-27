@@ -3,20 +3,21 @@
 """ MultiQC config module. Holds a single copy of
 config variables to be used across all other modules """
 
-from __future__ import print_function
-from datetime import datetime
-import inspect
-import collections
-import os
-import pkg_resources
-import subprocess
-import sys
-import yaml
 
-import multiqc
+import collections
+import inspect
 
 # Default logger will be replaced by caller
 import logging
+import os
+import subprocess
+import sys
+from datetime import datetime
+
+import pkg_resources
+import yaml
+
+import multiqc
 
 logger = logging.getLogger("multiqc")
 
@@ -53,7 +54,7 @@ with open(searchp_fn) as f:
 # Other defaults that can't be set in YAML
 data_tmp_dir = "/tmp"  # will be overwritten by core script
 modules_dir = os.path.join(MULTIQC_DIR, "modules")
-creation_date = datetime.now().strftime("%Y-%m-%d, %H:%M")
+creation_date = datetime.now().astimezone().strftime("%Y-%m-%d, %H:%M %Z")
 working_dir = os.getcwd()
 analysis_dir = [os.getcwd()]
 output_dir = os.path.realpath(os.getcwd())
@@ -92,6 +93,7 @@ if len(avail_modules) == 0 or len(avail_templates) == 0:
         file=sys.stderr,
     )
     sys.exit(1)
+
 
 ##### Functions to load user config files. These are called by the main MultiQC script.
 # Note that config files are loaded in a specific order and values can overwrite each other.
@@ -270,7 +272,7 @@ def load_show_hide(sh_file):
                         show_hide_mode.append(s[1])
                         show_hide_patterns.append(s[2:])
                         show_hide_regex.append(s[1] not in ["show", "hide"])  # flag whether or not regex is turned on
-        except (AttributeError) as e:
+        except AttributeError as e:
             logger.error("Error loading show patterns file: {}".format(e))
 
     # Prepend a "Show all" button if we have anything
